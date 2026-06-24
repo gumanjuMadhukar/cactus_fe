@@ -27,8 +27,8 @@ export function Work({ projects }: WorkProps) {
               <Link href={`/portfolio/${project.slug}`} className="group block overflow-hidden rounded-[2rem] border border-white/10 bg-white/[0.045]">
                 <div className="relative h-72 overflow-hidden">
                   <Image
-                    src={project.image}
-                    alt={project.title}
+                    src={project.image ?? ""}
+                    alt={project.title ?? ""}
                     fill
                     className="object-cover opacity-80 transition duration-700 group-hover:scale-105 group-hover:opacity-100"
                     sizes="(max-width: 1024px) 100vw, 33vw"

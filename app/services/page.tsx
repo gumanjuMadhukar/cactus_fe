@@ -12,6 +12,10 @@ export const metadata: Metadata = {
 export default async function ServicesPage() {
   const data = await getHomeData();
 
+  if (!data) {
+      throw new Error("No data returned from API");
+    }
+
   return (
     <>
       <section className="pb-4 pt-36 md:pt-44">

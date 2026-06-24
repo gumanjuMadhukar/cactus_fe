@@ -4,6 +4,8 @@ import { Button } from "@/components/ui/Button";
 import { SectionHeading } from "@/components/ui/SectionHeading";
 import { getHomeData } from "@/lib/api";
 
+import { stats , reasons } from "@/data/site";
+
 export const metadata: Metadata = {
   title: "About Us",
   description: "Learn about Cactus IT Solutions, our process, values, and business-first approach to digital products."
@@ -26,7 +28,7 @@ export default async function AboutPage() {
         </Reveal>
 
         <div className="mt-14 grid gap-6 md:grid-cols-3">
-          {data.stats.map((stat, index) => (
+          {stats?.map((stat, index) => (
             <Reveal key={stat.label} delay={index * 0.08}>
               <div className="glass-card rounded-[2rem] p-6">
                 <div className="text-4xl font-bold text-white">{stat.value}</div>
@@ -45,7 +47,7 @@ export default async function AboutPage() {
             />
           </Reveal>
           <div className="grid gap-5 md:grid-cols-2">
-            {data.reasons.map((reason, index) => (
+            {reasons?.map((reason, index) => (
               <Reveal key={reason.title} delay={index * 0.06}>
                 <div className="rounded-[2rem] border border-white/10 bg-white/[0.045] p-6">
                   <h3 className="text-xl font-semibold text-white">{reason.title}</h3>

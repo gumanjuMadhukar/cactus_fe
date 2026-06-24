@@ -22,6 +22,8 @@ export type NavItem = {
 
 export type SiteConfig = {
   name: string;
+  shortName: string;
+  url: string;
   tagline?: string;
   description?: string;
   email?: string;

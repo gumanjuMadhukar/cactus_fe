@@ -31,9 +31,9 @@ export function Contact({ siteConfig, services }: ContactProps) {
     setStatus("success");
     setMessage(result.message);
 
-    if (!result.fallback) {
-      event.currentTarget.reset();
-    }
+    // if (!result.fallback) {
+    //   event.currentTarget.reset();
+    // }
   }
 
   return (
