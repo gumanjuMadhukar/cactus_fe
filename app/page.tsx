@@ -11,6 +11,7 @@ import { ReloadButton } from "@/components/ui/ReloadButton";
 
 export default async function Home() {
   const data = await getHomeData();
+  console.log("Fetched home page data:", data);
 
   if (!data) {
     console.warn("Home data not available during build. Using fallback.");
