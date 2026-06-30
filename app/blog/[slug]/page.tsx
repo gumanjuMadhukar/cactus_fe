@@ -36,7 +36,7 @@ export default async function BlogPage({ params }: PageProps) {
         <Link href="/blog" className="mb-8 inline-flex items-center gap-2 text-sm text-white/55 transition hover:text-cactus-300">
           <ArrowLeft className="h-4 w-4" /> Back to blog
         </Link>
-        <p className="text-xs font-bold uppercase tracking-[0.32em] text-cactus-300">{post.category} / {post.date}</p>
+        {/* <p className="text-xs font-bold uppercase tracking-[0.32em] text-cactus-300">{post.category} / {post.date}</p> */}
         <h1 className="mt-5 text-5xl font-semibold tracking-tight text-white md:text-7xl">{post.title}</h1>
         <p className="mt-7 text-xl leading-9 text-white/66">{post.excerpt}</p>
 

@@ -22,17 +22,17 @@ export function Work({ projects }: WorkProps) {
         </Reveal>
 
         <div className="mt-12 grid gap-6 lg:grid-cols-3">
-          {projects.map((project, index) => (
+          {projects?.map((project, index) => (
             <Reveal key={project.slug} delay={index * 0.08}>
               <Link href={`/portfolio/${project.slug}`} className="group block overflow-hidden rounded-[2rem] border border-white/10 bg-white/[0.045]">
                 <div className="relative h-72 overflow-hidden">
-                  <Image
+                  {/* <Image
                     src={project.image ?? ""}
                     alt={project.title ?? ""}
                     fill
                     className="object-cover opacity-80 transition duration-700 group-hover:scale-105 group-hover:opacity-100"
                     sizes="(max-width: 1024px) 100vw, 33vw"
-                  />
+                  /> */}
                   <div className="absolute inset-0 bg-gradient-to-t from-night via-night/10 to-transparent" />
                   <div className="absolute left-5 top-5 rounded-full border border-white/10 bg-night/50 px-3 py-1 text-xs text-white/72 backdrop-blur">
                     {project.category}

@@ -10,6 +10,7 @@ export const metadata: Metadata = {
 
 export default async function BlogIndexPage() {
   const blogs = await getBlogs();
+  const blogsData = Array.isArray(blogs) ? blogs : [blogs];
 
   return (
     <>
@@ -24,7 +25,7 @@ export default async function BlogIndexPage() {
           </p>
         </div>
       </section>
-      <Insights blogs={blogs} />
+      <Insights blogs={blogsData} />
       <FinalCta />
     </>
   );

@@ -11,6 +11,8 @@ export const metadata: Metadata = {
 export default async function PortfolioIndexPage() {
   const projects = await getProjects();
 
+  console.log("DEBUG PROJECTS:", projects);
+
   return (
     <>
       <section className="pb-4 pt-36 md:pt-44">

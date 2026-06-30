@@ -19,9 +19,9 @@ export function Testimonials({ testimonials }: TestimonialsProps) {
         </Reveal>
         <div className="mt-12 grid gap-5 md:grid-cols-3">
           {testimonials.map((item, index) => (
-            <Reveal key={item.name} delay={index * 0.08}>
+            <Reveal key={`${item.name}-${index}`} delay={index * 0.08}>
               <figure className="glass-card h-full rounded-[2rem] p-6">
-                <blockquote className="text-base leading-8 text-white/72">“{item.quote}”</blockquote>
+                <blockquote className="text-}base leading-8 text-white/72">“{item.quote}”</blockquote>
                 <figcaption className="mt-8 border-t border-white/10 pt-5">
                   <div className="font-semibold text-white">{item.name}</div>
                   <div className="mt-1 text-sm text-white/45">{item.role}</div>

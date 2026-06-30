@@ -24,7 +24,7 @@ export function Insights({ blogs }: InsightsProps) {
             <Reveal key={post.slug} delay={index * 0.08}>
               <Link href={`/blog/${post.slug}`} className="group block h-full rounded-[2rem] border border-white/10 bg-white/[0.045] p-6 transition hover:-translate-y-1 hover:border-cactus-300/35">
                 <div className="mb-8 flex items-center justify-between text-xs text-white/42">
-                  <span>{post.category}</span>
+                  {/* <span>{post.category.name}</span> */}
                   <span>{post.date}</span>
                 </div>
                 <h3 className="text-2xl font-semibold leading-tight text-white">{post.title}</h3>
