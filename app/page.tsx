@@ -10,6 +10,7 @@ import { Insights } from "@/components/sections/Insights";
 import { Contact } from "@/components/sections/Contact";
 import { FinalCta } from "@/components/sections/FinalCta";
 import { getHomeData } from "@/lib/api";
+import { ReloadButton } from "@/components/ui/ReloadButton";
 
 export default async function Home() {
   try {
@@ -44,12 +45,7 @@ export default async function Home() {
           <p className="text-gray-600 mb-6">
             Failed to load page content. Please try refreshing.
           </p>
-          {/* <button 
-            onClick={() => window.location.reload()}
-            className="px-6 py-2 bg-blue-600 text-white rounded hover:bg-blue-700"
-          >
-            Reload Page
-          </button> */}
+         <ReloadButton />
         </div>
       </div>
     );
