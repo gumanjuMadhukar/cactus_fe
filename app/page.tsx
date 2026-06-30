@@ -15,6 +15,7 @@ import { ReloadButton } from "@/components/ui/ReloadButton";
 export default async function Home() {
   try {
     const data = await getHomeData();
+    console.log("Home page data:", data);
     
     if (!data) {
       throw new Error("No data returned from API");
