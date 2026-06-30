@@ -11,11 +11,18 @@ export const metadata: Metadata = {
 
 export default async function ServicesPage() {
   const data = await getHomeData();
-  console.log("Services page data:", data);
 
   if (!data) {
-      throw new Error("No data returned from API");
-    }
+    console.warn("Services page: Home data not available. Showing fallback.");
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="text-center">
+          <h1 className="text-4xl font-bold mb-4">Services</h1>
+          <p>Content is loading. Please refresh the page.</p>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <>
@@ -30,6 +37,7 @@ export default async function ServicesPage() {
           </p>
         </div>
       </section>
+
       <Services services={data.services} />
       <Process steps={data.processSteps} />
       <FinalCta />
