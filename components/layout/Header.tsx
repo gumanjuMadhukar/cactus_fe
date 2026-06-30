@@ -13,6 +13,11 @@ type HeaderProps = {
   // siteConfig: SiteConfig | null;
 };
 
+interface NavItem {
+  href: string;
+  label: string;
+}
+
 // Local fallback logo (place your logo in public/images/logo.png or adjust the path)
 const DEFAULT_LOGO = "/images/logo.png";
 
@@ -64,7 +69,7 @@ export function Header({ siteConfig }: HeaderProps) {
           </Link>
 
           <nav className="hidden items-center gap-6 lg:flex">
-            {navItems.map((item:{ href: string; label: string }) => (
+            {navItems.map((item: NavItem) => (
               <Link
                 key={item.href}
                 href={item.href}
@@ -101,7 +106,7 @@ export function Header({ siteConfig }: HeaderProps) {
           >
             <div className="rounded-3xl border border-white/10 bg-night/95 p-5 shadow-soft backdrop-blur-xl">
               <div className="grid gap-3">
-                {navItems.map((item) => (
+                {navItems.map((item: NavItem) => (
                   <Link
                     key={item.href}
                     href={item.href}
