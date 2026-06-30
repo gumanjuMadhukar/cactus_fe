@@ -64,7 +64,7 @@ export function Header({ siteConfig }: HeaderProps) {
           </Link>
 
           <nav className="hidden items-center gap-6 lg:flex">
-            {navItems.map((item) => (
+            {navItems.map((item:any) => (
               <Link
                 key={item.href}
                 href={item.href}
