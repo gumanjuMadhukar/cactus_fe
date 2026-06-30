@@ -24,8 +24,8 @@ type LaravelApiEnvelope<T> = {
 
 type ApiFetchOptions = {
   revalidate?: number;
-  tag?: string;           // Keep as singular for now
-  tags?: string[];        // Added support for multiple tags
+  tag?: string;
+  tags?: string[];
 };
 
 function buildApiUrl(endpoint: string): string {
@@ -34,22 +34,15 @@ function buildApiUrl(endpoint: string): string {
   }
 
   const cleanEndpoint = endpoint.startsWith("/") ? endpoint : `/${endpoint}`;
-
   return `${API_BASE_URL}${cleanEndpoint}`;
 }
 
 function normalizeApiData<T>(payload: unknown): T | null {
-  if (!payload) {
-    return null;
-  }
+  if (!payload) return null;
 
   if (typeof payload === "object" && "data" in payload) {
     const envelope = payload as LaravelApiEnvelope<T>;
-
-    if (envelope.success === false) {
-      return null;
-    }
-
+    if (envelope.success === false) return null;
     return envelope.data ?? null;
   }
 
@@ -57,16 +50,13 @@ function normalizeApiData<T>(payload: unknown): T | null {
 }
 
 function logApiWarning(endpoint: string, error?: unknown): void {
-  if (process.env.NODE_ENV !== "development") {
-    return;
-  }
+  if (process.env.NODE_ENV !== "development") return;
 
-  const reason =
-    error instanceof Error ? error.message : "Unknown API fetch issue.";
-
+  const reason = error instanceof Error ? error.message : "Unknown API fetch issue.";
   console.warn(`[Cactus API] ${endpoint}: ${reason}`);
 }
 
+/** Improved apiGet - More robust for build time */
 async function apiGet<T>(
   endpoint: string,
   options: ApiFetchOptions = {},
@@ -88,7 +78,7 @@ async function apiGet<T>(
       signal: controller.signal,
       next: {
         revalidate: options.revalidate ?? API_REVALIDATE_SECONDS,
-        tags: options.tags || (options.tag ? [options.tag] : undefined),   // ← Changed
+        tags: options.tags || (options.tag ? [options.tag] : undefined),
       },
     });
 
@@ -97,15 +87,16 @@ async function apiGet<T>(
     }
 
     if (!response.ok) {
-      throw new Error(`HTTP ${response.status}`);
+      logApiWarning(endpoint, new Error(`HTTP ${response.status}`));
+      return null;                    // ← Don't break build
     }
 
     const payload = await response.json();
-
     return normalizeApiData<T>(payload);
-  } catch (error) {
+
+  } catch (error: any) {
     logApiWarning(endpoint, error);
-    return null;
+    return null;                      // ← Safe fallback
   } finally {
     clearTimeout(timeout);
   }
@@ -116,100 +107,63 @@ async function apiList<T>(
   options: ApiFetchOptions = {},
 ): Promise<T[]> {
   const data = await apiGet<T[]>(endpoint, options);
-
-  if (!Array.isArray(data)) {
-    return [];
-  }
-
-  return data;
+  return Array.isArray(data) ? data : [];
 }
 
-/**
- * Home / Settings
- */
+/* ====================== FETCHERS ====================== */
 
 export async function getHomeData(): Promise<HomePageData | null> {
-  return apiGet<HomePageData>("/home", {
-    revalidate: 300,
-    tag: "home",
-  });
+  return apiGet<HomePageData>("/home", { revalidate: 300, tag: "home" });
 }
 
 export async function getSiteSettings(): Promise<SiteConfig | null> {
-  return apiGet<SiteConfig>("/settings/site", {
-    revalidate: 3600,
-    tag: "settings",
-  });
+  return apiGet<SiteConfig>("/settings/site", { revalidate: 3600, tag: "settings" });
 }
 
-/**
- * Services
- */
-
+/* Services */
 export async function getServices(): Promise<Service[]> {
-  return apiList<Service>("/services", {
-    revalidate: 1800,
-    tag: "services",
-  });
+  return apiList<Service>("/services", { revalidate: 1800, tag: "services" });
 }
 
 export async function getServiceBySlug(slug: string): Promise<Service | null> {
   return apiGet<Service>(`/services/${slug}`, {
     revalidate: 1800,
-    tags: ["services", `service:${slug}`],     // ← Improved
+    tags: ["services", `service:${slug}`],
   });
 }
 
-/**
- * Projects / Portfolio
- */
-
+/* Projects */
 export async function getProjects(): Promise<Project[]> {
-  return apiList<Project>("/projects", {
-    revalidate: 1800,
-    tag: "projects",
-  });
+  return apiList<Project>("/projects", { revalidate: 1800, tag: "projects" });
 }
 
 export async function getProjectBySlug(slug: string): Promise<Project | null> {
   return apiGet<Project>(`/projects/${slug}`, {
     revalidate: 1800,
-    tags: ["projects", `project:${slug}`],     // ← Improved
+    tags: ["projects", `project:${slug}`],
   });
 }
 
-/**
- * Blogs
- */
-
+/* Blogs */
 export async function getBlogs(): Promise<BlogPost[]> {
-  return apiList<BlogPost>("/blogs", {
-    revalidate: 600,
-    tag: "blogs",
-  });
+  return apiList<BlogPost>("/blogs", { revalidate: 600, tag: "blogs" });
 }
 
 export async function getBlogBySlug(slug: string): Promise<BlogPost | null> {
   return apiGet<BlogPost>(`/blogs/${slug}`, {
     revalidate: 600,
-    tags: ["blogs", `blog:${slug}`],           // ← Improved
+    tags: ["blogs", `blog:${slug}`],
   });
 }
 
-/**
- * Careers
- */
-
+/* Careers */
 export async function getJobs(): Promise<Job[]> {
-  return apiList<Job>("/careers", {
-    revalidate: 900,
-    tag: "careers",
-  });
+  return apiList<Job>("/careers", { revalidate: 900, tag: "careers" });
 }
 
 export async function getJobBySlug(slug: string): Promise<Job | null> {
   return apiGet<Job>(`/careers/${slug}`, {
     revalidate: 900,
-    tags: ["careers", `career:${slug}`],       // ← Improved
+    tags: ["careers", `career:${slug}`],
   });
 }
