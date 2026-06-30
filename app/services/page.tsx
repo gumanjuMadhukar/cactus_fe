@@ -11,6 +11,7 @@ export const metadata: Metadata = {
 
 export default async function ServicesPage() {
   const data = await getHomeData();
+  console.log("Services page data:", data);
 
   if (!data) {
       throw new Error("No data returned from API");

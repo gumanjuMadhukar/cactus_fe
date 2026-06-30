@@ -24,7 +24,8 @@ type LaravelApiEnvelope<T> = {
 
 type ApiFetchOptions = {
   revalidate?: number;
-  tag?: string;
+  tag?: string;           // Keep as singular for now
+  tags?: string[];        // Added support for multiple tags
 };
 
 function buildApiUrl(endpoint: string): string {
@@ -87,7 +88,7 @@ async function apiGet<T>(
       signal: controller.signal,
       next: {
         revalidate: options.revalidate ?? API_REVALIDATE_SECONDS,
-        tags: options.tag ? [options.tag] : undefined,
+        tags: options.tags || (options.tag ? [options.tag] : undefined),   // ← Changed
       },
     });
 
@@ -155,7 +156,7 @@ export async function getServices(): Promise<Service[]> {
 export async function getServiceBySlug(slug: string): Promise<Service | null> {
   return apiGet<Service>(`/services/${slug}`, {
     revalidate: 1800,
-    tag: `service:${slug}`,
+    tags: ["services", `service:${slug}`],     // ← Improved
   });
 }
 
@@ -173,7 +174,7 @@ export async function getProjects(): Promise<Project[]> {
 export async function getProjectBySlug(slug: string): Promise<Project | null> {
   return apiGet<Project>(`/projects/${slug}`, {
     revalidate: 1800,
-    tag: `project:${slug}`,
+    tags: ["projects", `project:${slug}`],     // ← Improved
   });
 }
 
@@ -191,7 +192,7 @@ export async function getBlogs(): Promise<BlogPost[]> {
 export async function getBlogBySlug(slug: string): Promise<BlogPost | null> {
   return apiGet<BlogPost>(`/blogs/${slug}`, {
     revalidate: 600,
-    tag: `blog:${slug}`,
+    tags: ["blogs", `blog:${slug}`],           // ← Improved
   });
 }
 
@@ -209,6 +210,6 @@ export async function getJobs(): Promise<Job[]> {
 export async function getJobBySlug(slug: string): Promise<Job | null> {
   return apiGet<Job>(`/careers/${slug}`, {
     revalidate: 900,
-    tag: `career:${slug}`,
+    tags: ["careers", `career:${slug}`],       // ← Improved
   });
 }
